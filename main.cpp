@@ -1,80 +1,78 @@
-#include "String.hpp"
 #include <iostream>
+#include "String.hpp"
 
 int main() {
-    try {
-        // Тест 1: Конструктор по умолчанию
-        String<char> empty;
-        std::cout << "Empty string size: " << empty.size() << ", empty: " 
-                  << (empty.empty() ? "yes" : "no") << "\n";
+    using std::cout;
+    using std::endl;
 
-        // Тест 2: Копирующий конструктор
-        String<char> original(5, 'A'); // "AAAAA"
-        String<char> copy = original;
-        std::cout << "Original size: " << original.size() << ", empty: " 
-                  << (original.empty() ? "yes" : "no") << "\n";
-        std::cout << "Copy size: " << copy.size() << ", empty: " 
-                  << (copy.empty() ? "yes" : "no") << "\n";
+    // substr
+    String<char> s1("HelloWorld");
+    String<char> sub = s1.substr(5, 5); // "World"
+    cout << "substr: ";
+    for (size_t i = 0; i < sub.size(); ++i)
+        cout << sub[i];
+    cout << endl;
 
-        // Тест 3: Перемещающий конструктор
-        String<char> temp(3, 'B'); // "BBB"
-        String<char> moved = std::move(temp);
-        std::cout << "Moved size: " << moved.size() << ", empty: " 
-                  << (moved.empty() ? "yes" : "no") << "\n";
-        std::cout << "Temp after move size: " << temp.size() << ", empty: " 
-                  << (temp.empty() ? "yes" : "no") << "\n";
+    // + String
+    String<char> a("Hello");
+    String<char> b(" C++");
+    String<char> c = a + b;
+    cout << "Concatenation (string + string): ";
+    for (size_t i = 0; i < c.size(); ++i)
+        cout << c[i];
+    cout << endl;
 
-        // Тест 4: Конструктор с повторением символа
-        String<char> stars(10, '*');
-        std::cout << "Stars size: " << stars.size() << ", empty: " 
-                  << (stars.empty() ? "yes" : "no") << "\n";
+    // + символ
+    String<char> d = a + '!';
+    cout << "Concatenation (string + char): ";
+    for (size_t i = 0; i < d.size(); ++i)
+        cout << d[i];
+    cout << endl;
 
-        // Тест 5: Конструктор из C-строки
-        const char* cstr = "Hello";
-        String<char> from_cstr(cstr);
-        std::cout << "C-string size: " << from_cstr.size() << ", empty: " 
-                  << (from_cstr.empty() ? "yes" : "no") << "\n";
+    String<char> e = '>' + a;
+    cout << "Concatenation (char + string): ";
+    for (size_t i = 0; i < e.size(); ++i)
+        cout << e[i];
+    cout << endl;
 
-        // Тест 6: Конструктор из пустой C-строки
-        const char* empty_cstr = "";
-        String<char> from_empty_cstr(empty_cstr);
-        std::cout << "Empty C-string size: " << from_empty_cstr.size() << ", empty: " 
-                  << (from_empty_cstr.empty() ? "yes" : "no") << "\n";
+    // push_back
+    String<char> f("Test");
+    f.push_back('!');
+    cout << "After push_back: ";
+    for (size_t i = 0; i < f.size(); ++i)
+        cout << f[i];
+    cout << endl;
 
-        // Тест 7: Конструктор из диапазона указателей
-        const char arr[] = {'H', 'e', 'l', 'l', 'o'};
-        String<char> from_range(arr, arr + 5);
-        std::cout << "Range size: " << from_range.size() << ", empty: " 
-                  << (from_range.empty() ? "yes" : "no") << "\n";
+    // умножение строки
+    String<char> g("ab");
+    String<char> repeated = g * 3;
+    cout << "Repetition (string * 3): ";
+    for (size_t i = 0; i < repeated.size(); ++i)
+        cout << repeated[i];
+    cout << endl;
 
-        // Тест 8: Копирующее присваивание
-        String<char> source("World");
-        String<char> dest;
-        dest = source;
-        std::cout << "Dest size after copy: " << dest.size() << ", empty: " 
-                  << (dest.empty() ? "yes" : "no") << "\n";
-        std::cout << "Source size after copy: " << source.size() << ", empty: " 
-                  << (source.empty() ? "yes" : "no") << "\n";
+    String<char> repeated2 = 2 * g;
+    cout << "Repetition (2 * string): ";
+    for (size_t i = 0; i < repeated2.size(); ++i)
+        cout << repeated2[i];
+    cout << endl;
 
-        // Тест 9: Копирующее присваивание пустой строки
-        String<char> empty_source;
-        String<char> dest2("Test");
-        dest2 = empty_source;
-        std::cout << "Dest2 size after empty copy: " << dest2.size() << ", empty: " 
-                  << (dest2.empty() ? "yes" : "no") << "\n";
+    // Проверка повторения с нулём
+    String<char> zeroRep = g * 0;
+    cout << "Repetition (string * 0): size = " << zeroRep.size() << ", empty? " << (zeroRep.empty() ? "yes" : "no") << endl;
 
-        // Тест 10: Самоприсваивание
-        String<char> self("Self");
-        self = self;
-        std::cout << "Self size after self-assign: " << self.size() << ", empty: " 
-                  << (self.empty() ? "yes" : "no") << "\n";
 
-        // Тест 11: Проверка исключения для некорректного диапазона
-        String<char> invalid_range(arr + 5, arr);
-        std::cout << "This line should not be reached\n";
-    } catch (const std::invalid_argument& e) {
-        std::cout << "Caught invalid_argument: " << e.what() << "\n";
-    }
+
+        String<char> x("apple");
+    String<char> y("banana");
+
+    cout << "x == y: " << (x == y ? "true" : "false") << endl;
+    cout << "x != y: " << (x != y ? "true" : "false") << endl;
+    cout << "x < y: "  << (x < y  ? "true" : "false") << endl;
+    cout << "x <= y: " << (x <= y ? "true" : "false") << endl;
+    cout << "x > y: "  << (x > y  ? "true" : "false") << endl;
+    cout << "x >= y: " << (x >= y ? "true" : "false") << endl;
+
 
     return 0;
 }
