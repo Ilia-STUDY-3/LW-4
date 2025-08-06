@@ -3,76 +3,72 @@
 
 int main() {
     using std::cout;
+    using std::cin;
     using std::endl;
 
-    // substr
+    // Конструкторы
     String<char> s1("HelloWorld");
+    String<char> s2(5, '*');
+    String<char> s3(s1);
+    String<char> s4(std::move(s2));
+    const char* abc = "ABCDE";
+    String<char> s5(abc + 1, abc + 4); // "BCD"
+
+    cout << "s1: " << s1 << endl;
+    cout << "s3 (copy of s1): " << s3 << endl;
+    cout << "s4 (moved from s2): " << s4 << endl;
+    cout << "s5 (range ABCDE+1 to +4): " << s5 << endl;
+
+    // substr
     String<char> sub = s1.substr(5, 5); // "World"
-    cout << "substr: ";
-    for (size_t i = 0; i < sub.size(); ++i)
-        cout << sub[i];
-    cout << endl;
+    cout << "substr(5,5): " << sub << endl;
 
-    // + String
-    String<char> a("Hello");
-    String<char> b(" C++");
-    String<char> c = a + b;
-    cout << "Concatenation (string + string): ";
-    for (size_t i = 0; i < c.size(); ++i)
-        cout << c[i];
-    cout << endl;
-
-    // + символ
-    String<char> d = a + '!';
-    cout << "Concatenation (string + char): ";
-    for (size_t i = 0; i < d.size(); ++i)
-        cout << d[i];
-    cout << endl;
-
-    String<char> e = '>' + a;
-    cout << "Concatenation (char + string): ";
-    for (size_t i = 0; i < e.size(); ++i)
-        cout << e[i];
-    cout << endl;
+    // Конкатенация
+    String<char> a("Hello"), b(" C++");
+    cout << "a + b: " << (a + b) << endl;
+    cout << "a + '!': " << (a + '!') << endl;
+    cout << "'>' + a: " << ('>' + a) << endl;
 
     // push_back
-    String<char> f("Test");
-    f.push_back('!');
-    cout << "After push_back: ";
-    for (size_t i = 0; i < f.size(); ++i)
-        cout << f[i];
-    cout << endl;
+    String<char> p("Test");
+    p.push_back('!');
+    cout << "After push_back: " << p << endl;
 
-    // умножение строки
-    String<char> g("ab");
-    String<char> repeated = g * 3;
-    cout << "Repetition (string * 3): ";
-    for (size_t i = 0; i < repeated.size(); ++i)
-        cout << repeated[i];
-    cout << endl;
+    // Повторение строки
+    String<char> r("ab");
+    cout << "r * 3: " << (r * 3) << endl;
+    cout << "2 * r: " << (2 * r) << endl;
+    cout << "r * 0: size = " << (r * 0).size() << ", empty? " << ((r * 0).empty() ? "yes" : "no") << endl;
 
-    String<char> repeated2 = 2 * g;
-    cout << "Repetition (2 * string): ";
-    for (size_t i = 0; i < repeated2.size(); ++i)
-        cout << repeated2[i];
-    cout << endl;
-
-    // Проверка повторения с нулём
-    String<char> zeroRep = g * 0;
-    cout << "Repetition (string * 0): size = " << zeroRep.size() << ", empty? " << (zeroRep.empty() ? "yes" : "no") << endl;
-
-
-
-        String<char> x("apple");
-    String<char> y("banana");
-
+    // Сравнение
+    String<char> x("apple"), y("banana");
     cout << "x == y: " << (x == y ? "true" : "false") << endl;
     cout << "x != y: " << (x != y ? "true" : "false") << endl;
-    cout << "x < y: "  << (x < y  ? "true" : "false") << endl;
+    cout << "x < y: "  << (x < y ? "true" : "false") << endl;
     cout << "x <= y: " << (x <= y ? "true" : "false") << endl;
-    cout << "x > y: "  << (x > y  ? "true" : "false") << endl;
+    cout << "x > y: "  << (x > y ? "true" : "false") << endl;
     cout << "x >= y: " << (x >= y ? "true" : "false") << endl;
 
+    // Трансформация (статик)
+    struct ToUpper {
+        char operator()(char ch) const {
+            return (ch >= 'a' && ch <= 'z') ? (ch - 'a' + 'A') : ch;
+        }
+    };
+
+    String<char> word("hello");
+    word.transform_inplace(ToUpper{});
+    cout << "After transform_inplace (ToUpper): " << word << endl;
+
+    String<char> original("hello");
+    String<char> upper = original.transform_copy(ToUpper{});
+    cout << "transform_copy (ToUpper): " << upper << ", original: " << original << endl;
+
+    // I/O
+    String<char> input;
+    cout << "Enter a word: ";
+    cin >> input;
+    cout << "You entered: " << input << endl;
 
     return 0;
 }
